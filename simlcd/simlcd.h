@@ -8,8 +8,10 @@
 #include <SDL2/SDL_scancode.h>
 #include <SDL2/SDL_syswm.h>
 
+#if _WIN32
 #include <windef.h>
 #include <winuser.h>
+#endif
 
 #define SIMLCD_USE_TOUCH
 

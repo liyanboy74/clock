@@ -44,9 +44,11 @@ int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
 
 void draw_test()
 {
+	#ifdef _WIN32
 	// Seleck bakgront color to hide
 	simlcd_set_color(&LCD_BUFFER,0x01,0x00,0x01);
 	simlcd_draw_rect(&LCD_BUFFER,0,0,LCD_BUFFER.w,LCD_BUFFER.h);
+	#endif
 
 	dispcolor_FillCircle(240,240,235,(cc_c)?WHITE:BLACK);
 
@@ -63,6 +65,7 @@ void draw_test()
 }
 
 
+#if _WIN32
 // Makes a window transparent by setting a transparency color.
 bool MakeWindowTransparent(SDL_Window* window, COLORREF colorKey,Uint8 tr) {
 	// Get window handle (https://stackoverflow.com/a/24118145/3357935)
@@ -79,6 +82,7 @@ bool MakeWindowTransparent(SDL_Window* window, COLORREF colorKey,Uint8 tr) {
 
 	return 0;
 }
+#endif
 
 int loop(int key)
 {
@@ -128,8 +132,11 @@ int loop(int key)
 
 			if(once_1)
 			{
+				#if(_WIN32)
 				MakeWindowTransparent(msaa_buf.window,0x010001,tr);
-				//SDL_SetWindowOpacity(msaa_buf.window,0.7);
+				#else if (__linux__)
+				SDL_SetWindowOpacity(msaa_buf.window,tr/255);
+				#endif
 				once_1=false;
 			}
 		}
