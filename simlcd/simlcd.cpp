@@ -17,7 +17,7 @@ simlcd_buffer_t simlcd_init(uint16_t height,uint16_t width,uint8_t scale)
 void simlcd_deinit(simlcd_buffer_t *buf)
 {
   free(buf->buf);
-  if(buf->window)SDL_DestroyWindow(buf->window);
+  if(buf->displayed)SDL_DestroyWindow(buf->window);
 }
 
 void simlcd_set_color(simlcd_buffer_t *buf,uint8_t r,uint8_t g,uint8_t b)

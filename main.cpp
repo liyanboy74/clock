@@ -135,7 +135,7 @@ int loop(int key)
 				#if(_WIN32)
 				MakeWindowTransparent(msaa_buf.window,0x010001,tr);
 				#elif (__linux__)
-				SDL_SetWindowOpacity(msaa_buf.window,tr/255);
+				SDL_SetWindowOpacity(msaa_buf.window,(float)tr/255.0);
 				#endif
 				once_1=false;
 			}
@@ -151,7 +151,7 @@ int loop(int key)
 void simlcd_exit()
 {
 	simlcd_deinit(&msaa_buf);
-	simlcd_deinit(&div_buf);
+	// simlcd_deinit(&div_buf);
 }
 
 int main(int argc,char *argv[])
