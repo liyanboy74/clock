@@ -134,7 +134,7 @@ int loop(int key)
 			{
 				#if(_WIN32)
 				MakeWindowTransparent(msaa_buf.window,0x010001,tr);
-				#else if (__linux__)
+				#elif (__linux__)
 				SDL_SetWindowOpacity(msaa_buf.window,tr/255);
 				#endif
 				once_1=false;
