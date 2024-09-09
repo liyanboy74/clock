@@ -3,10 +3,6 @@
 
 SDL_Event windowEvent;
 
-// Get resolution of primary monitor
-int desktopWidth = GetSystemMetrics(SM_CXSCREEN);
-int desktopHeight = GetSystemMetrics(SM_CYSCREEN);
-
 simlcd_buffer_t simlcd_init(uint16_t height,uint16_t width,uint8_t scale)
 {
   simlcd_buffer_t buf;
@@ -57,16 +53,17 @@ void simlcd_display(simlcd_buffer_t *buf)
   int i,j;
   uint32_t color;
   SDL_Rect rect;
-  static uint32_t wxp=desktopWidth-1;
+
+  static int wxp=100;
 
   if(buf->displayed==false)
   {
-    wxp-=(buf->w*buf->scale);
     // SDL_CreateWindowAndRenderer(WIDTH*SCALE,HEIGHT*SCALE,0,&window,&renderer);
-    buf->window=SDL_CreateWindow("",wxp,desktopHeight-70-(buf->h*buf->scale),buf->w*buf->scale,buf->h*buf->scale,SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR);
+    buf->window=SDL_CreateWindow("",wxp,100,buf->w*buf->scale,buf->h*buf->scale,SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR);
     buf->renderer=SDL_CreateRenderer(buf->window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     //SDL_Init(SDL_INIT_EVERYTHING);
     buf->displayed=true;
+    wxp+=(buf->w*buf->scale);
   }
 
   SDL_RenderClear(buf->renderer);
