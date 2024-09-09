@@ -1,0 +1,9 @@
+[submodule "cmake"]
+	path = cmake
+	url = https://github.com/tcbrindle/sdl2-cmake-scripts.git
+[submodule "dispcolor"]
+	path = dispcolor
+	url = https://github.com/liyanboy74/dispcolor.git
+[submodule "color"]
+	path = color
+	url = https://github.com/liyanboy74/color.git
