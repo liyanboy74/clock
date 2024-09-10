@@ -31,6 +31,11 @@ void simlcd_draw_point(simlcd_buffer_t *buf,int x,int y)
   buf->buf[(y*buf->w)+x]=buf->selected_color;
 }
 
+uint32_t simlcd_get_point(simlcd_buffer_t *buf,int x,int y)
+{
+  return buf->buf[(y*buf->w)+x];
+}
+
 void simlcd_draw_rect(simlcd_buffer_t *buf,int x,int y,int w,int h)
 {
   static SDL_Rect rect;
@@ -53,13 +58,12 @@ void simlcd_display(simlcd_buffer_t *buf)
   int i,j;
   uint32_t color;
   SDL_Rect rect;
-
-  static int wxp=100;
+  static uint32_t wxp=50;
 
   if(buf->displayed==false)
   {
     // SDL_CreateWindowAndRenderer(WIDTH*SCALE,HEIGHT*SCALE,0,&window,&renderer);
-    buf->window=SDL_CreateWindow("",wxp,100,buf->w*buf->scale,buf->h*buf->scale,SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR);
+    buf->window=SDL_CreateWindow("",wxp,50,buf->w*buf->scale,buf->h*buf->scale,SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR);
     buf->renderer=SDL_CreateRenderer(buf->window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     //SDL_Init(SDL_INIT_EVERYTHING);
     buf->displayed=true;
