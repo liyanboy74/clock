@@ -34,8 +34,7 @@ int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
 		if(cliked)
 		{
 			SDL_GetWindowPosition(msaa_buf.window,&xp,&yp);
-			if(xp!=NULL&&yp!=NULL)
-				SDL_SetWindowPosition(msaa_buf.window,xp+(x-xwp),yp+(y-ywp));
+			SDL_SetWindowPosition(msaa_buf.window,xp+(x-xwp),yp+(y-ywp));
 		}
 		break;
 	}
@@ -214,18 +213,18 @@ void DrawClock(uint8_t hour, uint8_t min, uint8_t sec, uint8_t light,
 
 	// ������� �����
 	float scale=2.05;
-	dispcolor_DrawString(scale*165, scale*30, FONTID_32F, "1", digitColor);//
-	dispcolor_DrawString(scale*200, scale*63, FONTID_32F, "2", digitColor);//
-	dispcolor_DrawString(scale*210, scale*106, FONTID_32F, "3", digitColor);
-	dispcolor_DrawString(scale*200, scale*160, FONTID_32F, "4", digitColor);//
-	dispcolor_DrawString(scale*165, scale*193, FONTID_32F, "5", digitColor);//
-	dispcolor_DrawString(scale*112, scale*205, FONTID_32F, "6", digitColor);
-	dispcolor_DrawString(scale*65, scale*193, FONTID_32F, "7", digitColor);//
-	dispcolor_DrawString(scale*32, scale*160, FONTID_32F, "8", digitColor);//
-	dispcolor_DrawString(scale*17, scale*106, FONTID_32F, "9", digitColor);
-	dispcolor_DrawString(scale*32, scale*63, FONTID_32F, "10", digitColor);//
-	dispcolor_DrawString(scale*65, scale*30, FONTID_32F, "11", digitColor);//
-	dispcolor_DrawString(scale*106, scale*14, FONTID_32F, "12", digitColor);
+	dispcolor_DrawString(scale*165, scale*30, FONTID_32F, (char*)&"1", digitColor);//
+	dispcolor_DrawString(scale*200, scale*63, FONTID_32F, (char*)&"2", digitColor);//
+	dispcolor_DrawString(scale*210, scale*106, FONTID_32F,(char*)&"3", digitColor);
+	dispcolor_DrawString(scale*200, scale*160, FONTID_32F,(char*)&"4", digitColor);//
+	dispcolor_DrawString(scale*165, scale*193, FONTID_32F,(char*)&"5", digitColor);//
+	dispcolor_DrawString(scale*112, scale*205, FONTID_32F,(char*)&"6", digitColor);
+	dispcolor_DrawString(scale*65, scale*193, FONTID_32F,(char*)&"7", digitColor);//
+	dispcolor_DrawString(scale*32, scale*160, FONTID_32F,(char*)&"8", digitColor);//
+	dispcolor_DrawString(scale*17, scale*106, FONTID_32F,(char*)&"9", digitColor);
+	dispcolor_DrawString(scale*32, scale*63, FONTID_32F, (char*)&"10", digitColor);//
+	dispcolor_DrawString(scale*65, scale*30, FONTID_32F, (char*)&"11", digitColor);//
+	dispcolor_DrawString(scale*106, scale*14, FONTID_32F, (char*)&"12", digitColor);
 
 	// dispcolor_printf(75+110, 80+220, FONTID_32F, digitColor, "%02d  %02d  %02d", hour,min, sec);
 
