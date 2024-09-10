@@ -41,7 +41,7 @@ int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
     return 0;
 }
 
-void draw_test()
+void draw()
 {
 	#ifdef _WIN32
 	// Seleck bakgront color to hide
@@ -50,16 +50,6 @@ void draw_test()
 	#endif
 
 	dispcolor_FillCircle(240,240,235,(cc_c)?WHITE:BLACK);
-
-	// dispcolor_DrawString(100,400,FONTID_6X8M,"HELLO WORLD!",WHITE);
-	// dispcolor_DrawString(100,420,FONTID_16F,"HELLO WORLD!",YELLOW);
-
-	// dispcolor_DrawCircle(240,240,130,WHITE,0);
-	// dispcolor_DrawCircle(240,240,129,WHITE,0);
-	// dispcolor_DrawCircle(240,240,128,WHITE,0);
-	// dispcolor_DrawCircle(240,240,127,WHITE,0);
-	// dispcolor_DrawCircle(240,240,126,WHITE,0);
-
 	DrawClock(timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec,cc_c,cc_t);
 }
 
@@ -89,7 +79,7 @@ int loop(int key)
 
     switch (key)
     {
-        case 44 :					//SPACE
+        case SDL_SCANCODE_SPACE :
 			(cc_c)?cc_c=0:cc_c=1;	//Change color
 			i=50,j=-1;				//Update
 			break;
@@ -103,8 +93,8 @@ int loop(int key)
 			once_1=true;
 			i=50,j=-1;				//Update
 			break;
-        case 41 :return -1;break;//ESC
-        //case 42 :dispcolor_FillScreen(BLUE);break;//BACKSPACE
+        case SDL_SCANCODE_ESCAPE:
+			return -1;break;
     }
 
 	i++;
@@ -119,7 +109,7 @@ int loop(int key)
 		{
 			j=timeinfo->tm_min;
 
-			draw_test();
+			draw();
 
 			// dispcolor_Update();
 
@@ -185,9 +175,6 @@ void DrawClock(uint8_t hour, uint8_t min, uint8_t sec, uint8_t light,
 		secArcColor = GREEN;
 	}
 
-	// dispcolor_FillScreen(bgColor);
-	//GC9A01_Screen_Load(0,0,240,240,bg1);
-
 	// ����� �� ����������
 	uint8_t radius1 = 230;
 	for (uint16_t angle = 0; angle <= 360; angle += 6) {
@@ -226,13 +213,12 @@ void DrawClock(uint8_t hour, uint8_t min, uint8_t sec, uint8_t light,
 	dispcolor_DrawString(scale*65, scale*30, FONTID_32F, (char*)&"11", digitColor);//
 	dispcolor_DrawString(scale*106, scale*14, FONTID_32F, (char*)&"12", digitColor);
 
-	// dispcolor_printf(75+110, 80+220, FONTID_32F, digitColor, "%02d  %02d  %02d", hour,min, sec);
+	// dispcolor_printf(75+110, 80+220, FONTID_32F, digitColor,(char*)&"%02d  %02d  %02d", hour,min, sec);
 
 	// ������� �������
 	DrawArrow(hour * 30 + min / 2, 40*2.4, 15, arrowColor);//50
 	// �������� �������
-	DrawArrow(min * 6 + sec / 10, 80*2.2, 10, arrowColor);//100 
-	
+	DrawArrow(min * 6 + sec / 10, 80*2.2, 10, arrowColor);//100
 
 	// ��������� ����
 	// if (!sec)
@@ -253,10 +239,6 @@ void DrawClock(uint8_t hour, uint8_t min, uint8_t sec, uint8_t light,
 	// 	}
 	// } else
 	// 	dispcolor_DrawArc(xC, yC, 230, 0, sec * 6, secArcColor, 4);
-
-	//dispcolor_Update();
-
-	//delay_ms(50);
 }
 
 
