@@ -97,42 +97,36 @@ int loop(int key)
 			return -1;break;
     }
 
-	i++;
-	if(i>=50)
+	time(&rawtime);
+	timeinfo=localtime(&rawtime);
+
+	if(j!=timeinfo->tm_sec)
 	{
-		i=0;
+		j=timeinfo->tm_sec;
 
-		time(&rawtime);
-		timeinfo=localtime(&rawtime);
+		draw();
 
-		if(j!=timeinfo->tm_min)
+		// dispcolor_Update();
+
+		// simlcd_div(&LCD_BUFFER,&div_buf,4);
+		// simlcd_display(&div_buf);
+
+		simlcd_msaa(&LCD_BUFFER,&msaa_buf,4);
+		simlcd_display(&msaa_buf);
+
+		if(once_1)
 		{
-			j=timeinfo->tm_min;
-
-			draw();
-
-			// dispcolor_Update();
-
-			// simlcd_div(&LCD_BUFFER,&div_buf,4);
-			// simlcd_display(&div_buf);
-
-			simlcd_msaa(&LCD_BUFFER,&msaa_buf,4);
-			simlcd_display(&msaa_buf);
-
-			if(once_1)
-			{
-				#if(_WIN32)
-				MakeWindowTransparent(msaa_buf.window,0x010001,tr);
-				#elif (__linux__)
-				SDL_SetWindowOpacity(msaa_buf.window,(float)tr/255.0);
-				#endif
-				once_1=false;
-			}
+			#if(_WIN32)
+			MakeWindowTransparent(msaa_buf.window,0x010001,tr);
+			#elif (__linux__)
+			SDL_SetWindowOpacity(msaa_buf.window,(float)tr/255.0);
+			#endif
+			once_1=false;
 		}
 	}
 
 	if(cliked)simlcd_delay(10);
-	else simlcd_delay(20);
+	else simlcd_delay(200);
 
     return 0;
 }
@@ -239,6 +233,10 @@ void DrawClock(uint8_t hour, uint8_t min, uint8_t sec, uint8_t light,
 	// 	}
 	// } else
 	// 	dispcolor_DrawArc(xC, yC, 230, 0, sec * 6, secArcColor, 4);
+
+	DrawArrow(sec*6,200,2,RED);
+	DrawArrow((sec>=30)?(sec-30)*6:(sec+30)*6,30,2,RED);
+	dispcolor_FillCircle(xC,yC,10,RED);
 }
 
 
