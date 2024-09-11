@@ -128,7 +128,7 @@ int loop(int key)
 	}
 
 	if(cliked)simlcd_delay(10);
-	else simlcd_delay(20);
+	else simlcd_delay(200);
 
     return 0;
 }
