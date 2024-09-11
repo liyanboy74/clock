@@ -16,7 +16,7 @@ time_t rawtime;
 struct tm * timeinfo;
 
 bool once_1=true;
-static bool cliked=false;
+bool cliked=false;
 uint8_t tr=150;
 
 uint8_t cc_c=0,cc_t=0;
@@ -76,24 +76,24 @@ bool MakeWindowTransparent(SDL_Window* window, COLORREF colorKey,Uint8 tr) {
 
 int loop(int key)
 {
-	static int i=50,j=-1;
+	static int j=-1;
 
     switch (key)
     {
         case SDL_SCANCODE_SPACE :
 			(cc_c)?cc_c=0:cc_c=1;	//Change color
-			i=50,j=-1;				//Update
+			j=-1;					//Update
 			once_1=true;
 			break;
 		case SDL_SCANCODE_KP_PLUS:
-			if(tr<0xff)tr+=5;
+			if(tr<=240)tr+=10;
 			once_1=true;
-			i=50,j=-1;				//Update
+			j=-1;					//Update
 			break;
 		case SDL_SCANCODE_KP_MINUS:
-			if(tr>=10)tr-=5;
+			if(tr>=20)tr-=10;
 			once_1=true;
-			i=50,j=-1;				//Update
+			j=-1;					//Update
 			break;
         case SDL_SCANCODE_ESCAPE:
 			return -1;break;
@@ -126,9 +126,11 @@ int loop(int key)
 			once_1=false;
 		}
 	}
-
-	if(cliked)simlcd_delay(10);
-	else simlcd_delay(200);
+	else
+	{
+		if(cliked)simlcd_delay(10);
+		else simlcd_delay(200);
+	}
 
     return 0;
 }
@@ -211,31 +213,11 @@ void DrawClock(uint8_t hour, uint8_t min, uint8_t sec, uint8_t light,
 
 	// dispcolor_printf(75+110, 80+220, FONTID_32F, digitColor,(char*)&"%02d  %02d  %02d", hour,min, sec);
 
-	// ������� �������
+	// Draw hour
 	DrawArrow(hour * 30 + min / 2, 40*2.4, 15, arrowColor);//50
-	// �������� �������
+	// Draw min
 	DrawArrow(min * 6 + sec / 10, 80*2.2, 10, arrowColor);//100
-
-	// ��������� ����
-	// if (!sec)
-	// 	sec = 60;
-	// if (secBubbles) {
-	// 	int16_t startAngle = -90;
-	// 	int16_t endAngle = sec * 6 - 90;
-
-	// 	for (int16_t angle = startAngle; angle <= endAngle; angle += 6) {
-	// 		float angleRad = (float) angle * PI / 180;
-	// 		int x = cos(angleRad) * 235 + xC;
-	// 		int y = sin(angleRad) * 235 + yC;
-
-	// 		if (angle == endAngle)
-	// 			dispcolor_FillCircleWu(x, y, 4, secArcColor);
-	// 		else
-	// 			dispcolor_FillCircleWu(x, y, 3, secArcColor);
-	// 	}
-	// } else
-	// 	dispcolor_DrawArc(xC, yC, 230, 0, sec * 6, secArcColor, 4);
-
+	// Draw Sec
 	DrawArrow(sec*6,200,2,RED);
 	DrawArrow((sec>=30)?(sec-30)*6:(sec+30)*6,30,2,RED);
 	dispcolor_FillCircle(xC,yC,10,RED);
