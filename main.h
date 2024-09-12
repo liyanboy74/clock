@@ -1,9 +1,6 @@
 #include "bg/girl.h"
 #include "bg/space.h"
 #include "bg/flowerD.h"
-#include "bg/watch.h"
-
-#define bg_len 4
 
 #define PI 	3.14159265
 #define xC	240

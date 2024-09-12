@@ -77,9 +77,6 @@ void draw()
 		case 4:
 			load_image(&LCD_BUFFER,flowerD);
 			break;
-		case 5:
-			load_image(&LCD_BUFFER,watch);
-			break;
 	}
 
 	DrawClock(timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec,(bg%2),cc_t);
@@ -114,7 +111,7 @@ int loop(int key)
     {
         case SDL_SCANCODE_SPACE :
 			bg++;
-			if(bg>bg_len+1)bg=0;
+			if(bg>4)bg=0;
 			j=-1;					//Update
 			once_1=true;
 			break;
@@ -206,45 +203,42 @@ void DrawClock(uint8_t hour, uint8_t min, uint8_t sec, uint8_t light,
 		secArcColor = GREEN;
 	}
 
-	if(bg!=5)
-	{
-		uint8_t radius1 = 230;
-		for (uint16_t angle = 0; angle <= 360; angle += 6) {
-			uint8_t riskSize;
-			if (!(angle % 90))
-				riskSize = 12;
-			else if (!(angle % 30))
-				riskSize = 9;
-			else
-				riskSize = 6;
+	uint8_t radius1 = 230;
+	for (uint16_t angle = 0; angle <= 360; angle += 6) {
+		uint8_t riskSize;
+		if (!(angle % 90))
+			riskSize = 12;
+		else if (!(angle % 30))
+			riskSize = 9;
+		else
+			riskSize = 6;
 
-			uint8_t radius2 = radius1 - riskSize;
-			float angleRad = (float) angle * PI / 180;
-			int x1 = cos(angleRad) * radius1 + xC;
-			int y1 = sin(angleRad) * radius1 + yC;
-			int x2 = cos(angleRad) * radius2 + xC;
-			int y2 = sin(angleRad) * radius2 + yC;
+		uint8_t radius2 = radius1 - riskSize;
+		float angleRad = (float) angle * PI / 180;
+		int x1 = cos(angleRad) * radius1 + xC;
+		int y1 = sin(angleRad) * radius1 + yC;
+		int x2 = cos(angleRad) * radius2 + xC;
+		int y2 = sin(angleRad) * radius2 + yC;
 
-			// dispcolor_DrawLine_Wu(x1, y1, x2, y2, riskColor);
-			dispcolor_DrawLine2(x1, y1, x2, y2, riskColor,2);
+		// dispcolor_DrawLine_Wu(x1, y1, x2, y2, riskColor);
+		dispcolor_DrawLine2(x1, y1, x2, y2, riskColor,2);
 
-		}
-
-		// ������� �����
-		float scale=2.05;
-		dispcolor_DrawString(scale*165, scale*30, FONTID_32F, (char*)&"1", digitColor);//
-		dispcolor_DrawString(scale*200, scale*63, FONTID_32F, (char*)&"2", digitColor);//
-		dispcolor_DrawString(scale*210, scale*106, FONTID_32F,(char*)&"3", digitColor);
-		dispcolor_DrawString(scale*200, scale*160, FONTID_32F,(char*)&"4", digitColor);//
-		dispcolor_DrawString(scale*165, scale*193, FONTID_32F,(char*)&"5", digitColor);//
-		dispcolor_DrawString(scale*112, scale*205, FONTID_32F,(char*)&"6", digitColor);
-		dispcolor_DrawString(scale*65, scale*193, FONTID_32F,(char*)&"7", digitColor);//
-		dispcolor_DrawString(scale*32, scale*160, FONTID_32F,(char*)&"8", digitColor);//
-		dispcolor_DrawString(scale*17, scale*106, FONTID_32F,(char*)&"9", digitColor);
-		dispcolor_DrawString(scale*32, scale*63, FONTID_32F, (char*)&"10", digitColor);//
-		dispcolor_DrawString(scale*65, scale*30, FONTID_32F, (char*)&"11", digitColor);//
-		dispcolor_DrawString(scale*106, scale*14, FONTID_32F, (char*)&"12", digitColor);
 	}
+
+	// ������� �����
+	float scale=2.05;
+	dispcolor_DrawString(scale*165, scale*30, FONTID_32F, (char*)&"1", digitColor);//
+	dispcolor_DrawString(scale*200, scale*63, FONTID_32F, (char*)&"2", digitColor);//
+	dispcolor_DrawString(scale*210, scale*106, FONTID_32F,(char*)&"3", digitColor);
+	dispcolor_DrawString(scale*200, scale*160, FONTID_32F,(char*)&"4", digitColor);//
+	dispcolor_DrawString(scale*165, scale*193, FONTID_32F,(char*)&"5", digitColor);//
+	dispcolor_DrawString(scale*112, scale*205, FONTID_32F,(char*)&"6", digitColor);
+	dispcolor_DrawString(scale*65, scale*193, FONTID_32F,(char*)&"7", digitColor);//
+	dispcolor_DrawString(scale*32, scale*160, FONTID_32F,(char*)&"8", digitColor);//
+	dispcolor_DrawString(scale*17, scale*106, FONTID_32F,(char*)&"9", digitColor);
+	dispcolor_DrawString(scale*32, scale*63, FONTID_32F, (char*)&"10", digitColor);//
+	dispcolor_DrawString(scale*65, scale*30, FONTID_32F, (char*)&"11", digitColor);//
+	dispcolor_DrawString(scale*106, scale*14, FONTID_32F, (char*)&"12", digitColor);
 
 	// Draw hour
 	DrawArrow(hour * 30 + min / 2, 40*2.4, 15, arrowColor);//50
