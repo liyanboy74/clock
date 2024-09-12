@@ -19,7 +19,7 @@ bool once_1=true;
 bool cliked=false;
 uint8_t tr=150;
 
-uint8_t cc_c=0,cc_t=0;
+uint8_t bg=0,cc_t=0;
 
 int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
 {
@@ -41,17 +41,40 @@ int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
     return 0;
 }
 
+void load_image(simlcd_buffer_t *buf,const uint16_t *image)
+{
+	color_rgb_s c;
+	for(int i=0;i<buf->h*buf->w;i++)
+	{
+		c=color_16_to_24_s(image[i]);
+		buf->buf[i]=(c.r<<16)|(c.g<<8)|(c.b<<0);
+	}
+}
+
 void draw()
 {
 	#ifdef _WIN32
 	// Seleck bakgront color to hide
-	if(cc_c) simlcd_set_color(&LCD_BUFFER,0xfe,0xff,0xfe);
-	else simlcd_set_color(&LCD_BUFFER,0x01,0x00,0x01);
+	if(!bg) simlcd_set_color(&LCD_BUFFER,COLOR_HIDE_0);
+	else simlcd_set_color(&LCD_BUFFER,COLOR_HIDE_1);
 	simlcd_draw_rect(&LCD_BUFFER,0,0,LCD_BUFFER.w,LCD_BUFFER.h);
 	#endif
 
-	dispcolor_FillCircle(240,240,235,(cc_c)?WHITE:BLACK);
-	DrawClock(timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec,cc_c,cc_t);
+	switch(bg)
+	{
+		case 0:
+			dispcolor_FillCircle(240,240,235,BLACK+1);
+			break;
+		case 1:
+			dispcolor_FillCircle(240,240,235,WHITE-1);
+			break;
+		case 2:
+			load_image(&LCD_BUFFER,girl);
+			break;
+	}
+
+	DrawClock(timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec,(bg),cc_t);
+
 }
 
 
@@ -81,7 +104,8 @@ int loop(int key)
     switch (key)
     {
         case SDL_SCANCODE_SPACE :
-			(cc_c)?cc_c=0:cc_c=1;	//Change color
+			bg++;
+			if(bg>2)bg=0;
 			j=-1;					//Update
 			once_1=true;
 			break;
@@ -119,7 +143,7 @@ int loop(int key)
 		if(once_1)
 		{
 			#if(_WIN32)
-			MakeWindowTransparent(msaa_buf.window,cc_c?0xfefffe:0x010001,tr);
+			MakeWindowTransparent(msaa_buf.window,bg?COLOR_HIDE_1_32:COLOR_HIDE_0_32,tr);
 			#elif (__linux__)
 			SDL_SetWindowOpacity(msaa_buf.window,(float)tr/255.0);
 			#endif
@@ -164,12 +188,12 @@ void DrawClock(uint8_t hour, uint8_t min, uint8_t sec, uint8_t light,
 	uint16_t bgColor, riskColor, digitColor, arrowColor, secArcColor;
 
 	if (light) {
-		bgColor = WHITE;
-		riskColor = digitColor = arrowColor = BLACK;
+		bgColor = WHITE-1;
+		riskColor = digitColor = arrowColor = BLACK+1;
 		secArcColor = MAGENTA;
 	} else {
-		bgColor = BLACK;
-		riskColor = digitColor = arrowColor = WHITE;
+		bgColor = BLACK+1;
+		riskColor = digitColor = arrowColor = WHITE-1;
 		secArcColor = GREEN;
 	}
 
