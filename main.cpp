@@ -135,7 +135,7 @@ int loop(int key)
 
 		draw();
 
-		dispcolor_Update();
+		// dispcolor_Update();
 
 		// simlcd_div(&LCD_BUFFER,&div_buf,4);
 		// simlcd_display(&div_buf);
