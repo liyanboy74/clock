@@ -8,6 +8,8 @@ simlcd_buffer_t simlcd_init(uint16_t height,uint16_t width,uint8_t scale)
   simlcd_buffer_t buf;
   buf.h=height;
   buf.w=width;
+  buf.wx=50;
+  buf.wy=50;
   buf.scale=scale+1;
   buf.buf=(uint32_t*)calloc(sizeof(uint32_t),buf.h*buf.w);
   buf.displayed=false;
@@ -16,8 +18,9 @@ simlcd_buffer_t simlcd_init(uint16_t height,uint16_t width,uint8_t scale)
 
 void simlcd_deinit(simlcd_buffer_t *buf)
 {
-  free(buf->buf);
   if(buf->displayed)SDL_DestroyWindow(buf->window);
+  buf->displayed=false;
+  free(buf->buf);
 }
 
 void simlcd_set_color(simlcd_buffer_t *buf,uint8_t r,uint8_t g,uint8_t b)
@@ -58,16 +61,16 @@ void simlcd_display(simlcd_buffer_t *buf)
   int i,j;
   uint32_t color;
   SDL_Rect rect;
-  static uint32_t wxp=50;
+  // static uint32_t wxp=50;
 
   if(buf->displayed==false)
   {
     // SDL_CreateWindowAndRenderer(WIDTH*SCALE,HEIGHT*SCALE,0,&window,&renderer);
-    buf->window=SDL_CreateWindow("",wxp,50,buf->w*buf->scale,buf->h*buf->scale,SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR);
+    buf->window=SDL_CreateWindow("",buf->wx,buf->wy,buf->w*buf->scale,buf->h*buf->scale,SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR);
     buf->renderer=SDL_CreateRenderer(buf->window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     //SDL_Init(SDL_INIT_EVERYTHING);
     buf->displayed=true;
-    wxp+=(buf->w*buf->scale);
+    // wxp+=(buf->w*buf->scale);
   }
 
   SDL_RenderClear(buf->renderer);
@@ -149,10 +152,13 @@ void simlcd_msaa(simlcd_buffer_t *in,simlcd_buffer_t *out,int msaaX)
 
   out->scale=in->scale;
 
+  out->wx=in->wx;
+  out->wy=in->wy;
+
   out->h=(in->h/msaaX);
   out->w=(in->w/msaaX);
 
-  free(out->buf);
+  if(out->displayed==true)free(out->buf);
   out->buf=(uint32_t*)calloc(sizeof(uint32_t),out->h*out->w);
 
   for(y=0;y<(out->h);y++)

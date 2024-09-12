@@ -20,6 +20,7 @@ bool cliked=false;
 uint8_t tr=150;
 
 uint8_t bg=0,cc_t=0;
+uint8_t zoom=4;
 
 int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
 {
@@ -29,7 +30,12 @@ int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
 	switch(event)
 	{
 		case SDL_MOUSEBUTTONDOWN:cliked=true;xwp=x;ywp=y;break;
-		case SDL_MOUSEBUTTONUP:cliked=false;break;
+		case SDL_MOUSEBUTTONUP:
+			cliked=false;
+			SDL_GetWindowPosition(msaa_buf.window,&xp,&yp);
+			LCD_BUFFER.wx=xp;
+			LCD_BUFFER.wy=yp;
+			break;
 		case SDL_MOUSEMOTION:
 		if(cliked)
 		{
@@ -112,21 +118,28 @@ int loop(int key)
         case SDL_SCANCODE_SPACE :
 			bg++;
 			if(bg>4)bg=0;
-			j=-1;					//Update
+			j=-1;
 			once_1=true;
 			break;
 		case SDL_SCANCODE_KP_PLUS:
 			if(tr<=240)tr+=10;
 			once_1=true;
-			j=-1;					//Update
+			j=-1;
 			break;
 		case SDL_SCANCODE_KP_MINUS:
 			if(tr>=20)tr-=10;
 			once_1=true;
-			j=-1;					//Update
+			j=-1;
 			break;
         case SDL_SCANCODE_ESCAPE:
 			return -1;break;
+		case SDL_SCANCODE_TAB:
+			zoom--;
+			if(zoom==0)zoom=10;
+			once_1=true;
+			j=-1;
+			simlcd_deinit(&msaa_buf);
+			break;
     }
 
 	time(&rawtime);
@@ -143,7 +156,7 @@ int loop(int key)
 		// simlcd_div(&LCD_BUFFER,&div_buf,4);
 		// simlcd_display(&div_buf);
 
-		simlcd_msaa(&LCD_BUFFER,&msaa_buf,4);
+		simlcd_msaa(&LCD_BUFFER,&msaa_buf,zoom);
 		simlcd_display(&msaa_buf);
 
 		if(once_1)
