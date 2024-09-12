@@ -55,8 +55,8 @@ void draw()
 {
 	#ifdef _WIN32
 	// Seleck bakgront color to hide
-	if(!bg) simlcd_set_color(&LCD_BUFFER,COLOR_HIDE_0);
-	else simlcd_set_color(&LCD_BUFFER,COLOR_HIDE_1);
+	if(bg%2) simlcd_set_color(&LCD_BUFFER,COLOR_HIDE_1);
+	else simlcd_set_color(&LCD_BUFFER,COLOR_HIDE_0);
 	simlcd_draw_rect(&LCD_BUFFER,0,0,LCD_BUFFER.w,LCD_BUFFER.h);
 	#endif
 
@@ -69,6 +69,9 @@ void draw()
 			dispcolor_FillCircle(240,240,235,WHITE-1);
 			break;
 		case 2:
+			load_image(&LCD_BUFFER,space);
+			break;
+		case 3:
 			load_image(&LCD_BUFFER,girl);
 			break;
 	}
@@ -105,7 +108,7 @@ int loop(int key)
     {
         case SDL_SCANCODE_SPACE :
 			bg++;
-			if(bg>2)bg=0;
+			if(bg>3)bg=0;
 			j=-1;					//Update
 			once_1=true;
 			break;
@@ -143,7 +146,7 @@ int loop(int key)
 		if(once_1)
 		{
 			#if(_WIN32)
-			MakeWindowTransparent(msaa_buf.window,bg?COLOR_HIDE_1_32:COLOR_HIDE_0_32,tr);
+			MakeWindowTransparent(msaa_buf.window,bg%2?COLOR_HIDE_1_32:COLOR_HIDE_0_32,tr);
 			#elif (__linux__)
 			SDL_SetWindowOpacity(msaa_buf.window,(float)tr/255.0);
 			#endif

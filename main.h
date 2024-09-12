@@ -1,4 +1,5 @@
 #include "bg/girl.h"
+#include "bg/space.h"
 
 #define PI 	3.14159265
 #define xC	240
