@@ -1,5 +1,8 @@
 #include "bg/girl.h"
 #include "bg/space.h"
+#include "bg/flowerD.h"
+
+#define bg_len 3
 
 #define PI 	3.14159265
 #define xC	240

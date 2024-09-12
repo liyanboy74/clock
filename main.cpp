@@ -74,6 +74,9 @@ void draw()
 		case 3:
 			load_image(&LCD_BUFFER,girl);
 			break;
+		case 4:
+			load_image(&LCD_BUFFER,flowerD);
+			break;
 	}
 
 	DrawClock(timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec,(bg%2),cc_t);
@@ -108,7 +111,7 @@ int loop(int key)
     {
         case SDL_SCANCODE_SPACE :
 			bg++;
-			if(bg>3)bg=0;
+			if(bg>bg_len+1)bg=0;
 			j=-1;					//Update
 			once_1=true;
 			break;
