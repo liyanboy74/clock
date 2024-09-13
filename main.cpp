@@ -22,7 +22,7 @@ uint8_t tr=150;
 uint8_t bg=0,cc_t=0;
 uint8_t zoom=3;
 
-const uint16_t *images[]={space,girl,flowerD,w1,b1,w2,b2,w3,b3,w4,b4,w5,b5,w6,b6,w7,b7,montain,windows_xp};
+const uint16_t *images[]={space,girl,flowerD,w1,b1,w2,b2,w3,b3,w4,b4,w5,b5,w6,b6,w7,b7,montain,windows_xp,w8};
 
 int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
 {
@@ -113,7 +113,7 @@ int loop(int key)
     {
         case SDL_SCANCODE_SPACE :
 			bg++;
-			if(bg>20)bg=0;
+			if(bg>21)bg=0;
 			j=-1;
 			once_1=true;
 			break;
