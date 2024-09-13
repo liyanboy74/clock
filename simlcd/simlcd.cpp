@@ -8,8 +8,8 @@ simlcd_buffer_t simlcd_init(uint16_t height,uint16_t width,uint8_t scale)
   simlcd_buffer_t buf;
   buf.h=height;
   buf.w=width;
-  buf.wx=50;
-  buf.wy=50;
+  buf.wx=150;
+  buf.wy=150;
   buf.wu=false;
   buf.scale=scale+1;
   buf.buf=(uint32_t*)calloc(sizeof(uint32_t),buf.h*buf.w);
@@ -74,7 +74,7 @@ void simlcd_display(simlcd_buffer_t *buf)
   {
     // SDL_CreateWindowAndRenderer(WIDTH*SCALE,HEIGHT*SCALE,0,&window,&renderer);
     SDL_Init(SDL_INIT_EVERYTHING);
-    buf->window=SDL_CreateWindow("",buf->wx,buf->wy,buf->w*buf->scale,buf->h*buf->scale,SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR);
+    buf->window=SDL_CreateWindow("",buf->wx-((buf->w*buf->scale)/2),buf->wy-((buf->h*buf->scale)/2),buf->w*buf->scale,buf->h*buf->scale,SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR);
     buf->renderer=SDL_CreateRenderer(buf->window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     // wxp+=(buf->w*buf->scale);
   }

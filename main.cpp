@@ -33,8 +33,8 @@ int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
 		case SDL_MOUSEBUTTONUP:
 			cliked=false;
 			SDL_GetWindowPosition(div_buf.window,&xp,&yp);
-			LCD_BUFFER.wx=xp;
-			LCD_BUFFER.wy=yp;
+			LCD_BUFFER.wx=xp+((div_buf.w*div_buf.scale)/2);
+			LCD_BUFFER.wy=yp+((div_buf.h*div_buf.scale)/2);
 			break;
 		case SDL_MOUSEMOTION:
 		if(cliked)
