@@ -12,3 +12,4 @@ git clone --recursive https://github.com/liyanboy74/clock.git
 - use `SPACE` for change color.
 - use `+`or`-` to control opacity.
 - drag by mouse for change position.
+- use `TAB` for change size.
