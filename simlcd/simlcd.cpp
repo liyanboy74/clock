@@ -151,7 +151,7 @@ void simlcd_play()
   SDL_Quit();
 }
 
-void simlcd_msaa(simlcd_buffer_t *in,simlcd_buffer_t *out,int msaaX)
+void simlcd_div(simlcd_buffer_t *in,simlcd_buffer_t *out,int scale)
 {
   uint32_t color;
   uint32_t i,j,x,y;
@@ -162,17 +162,17 @@ void simlcd_msaa(simlcd_buffer_t *in,simlcd_buffer_t *out,int msaaX)
   out->wx=in->wx;
   out->wy=in->wy;
 
-  if(out->h!=(in->h/msaaX))
+  if(out->h!=(in->h/scale))
   {
     out->wu=true;
   }
-  out->h=(in->h/msaaX);
+  out->h=(in->h/scale);
 
-  if(out->w!=(in->w/msaaX))
+  if(out->w!=(in->w/scale))
   {
     out->wu=true;
   }
-  out->w=(in->w/msaaX);
+  out->w=(in->w/scale);
 
   if(out->displayed==true || out->wu==true)free(out->buf);
   out->buf=(uint32_t*)calloc(sizeof(uint32_t),out->h*out->w);
@@ -181,39 +181,19 @@ void simlcd_msaa(simlcd_buffer_t *in,simlcd_buffer_t *out,int msaaX)
     for(x=0;x<(out->w);x++)
     {
       r=0,g=0,b=0;
-      for(i=0;i<msaaX;i++)
-        for(j=0;j<msaaX;j++)
+      for(i=0;i<scale;i++)
+        for(j=0;j<scale;j++)
         {
           if((y>=((out->h)-1) && j>0));
           else
-          color=in->buf[(((y*msaaX)+j)*(in->w))+((x*msaaX)+i)];
+          color=in->buf[(((y*scale)+j)*(in->w))+((x*scale)+i)];
           b+=((color>>0)&0xff);
           g+=((color>>8)&0xff);
           r+=((color>>16)&0xff);
         }
-      color=((uint32_t)((float)r/(msaaX*msaaX))<<16)|((uint32_t)((float)g/(msaaX*msaaX))<<8)|\
-            ((uint32_t)((float)b/(msaaX*msaaX))<<0);
+      color=((uint32_t)((float)r/(scale*scale))<<16)|((uint32_t)((float)g/(scale*scale))<<8)|\
+            ((uint32_t)((float)b/(scale*scale))<<0);
 
-      out->buf[(y*(out->w))+x]=color;
-    }
-}
-
-void simlcd_div(simlcd_buffer_t *in,simlcd_buffer_t *out,int n)
-{
-  uint32_t color;
-  uint32_t x,y;
-
-  out->scale=in->scale;
-  out->h=(in->h/n);
-  out->w=(in->w/n);
-
-  free(out->buf);
-  out->buf=(uint32_t*)calloc(sizeof(uint32_t),out->h*out->w);
-
-  for(y=0;y<(out->h);y++)
-    for(x=0;x<(out->w);x++)
-    {
-      color=in->buf[(((y*n))*(in->w))+((x*n))];
       out->buf[(y*(out->w))+x]=color;
     }
 }

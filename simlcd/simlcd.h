@@ -49,8 +49,7 @@ extern void simlcd_exit();
 extern int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event);
 #endif
 
-void simlcd_msaa(simlcd_buffer_t *in,simlcd_buffer_t *out,int msaaX);
-void simlcd_div(simlcd_buffer_t *in,simlcd_buffer_t *out,int n);
+void simlcd_div(simlcd_buffer_t *in,simlcd_buffer_t *out,int msaaX);
 
 #ifdef __cplusplus
 }

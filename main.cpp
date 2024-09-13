@@ -10,7 +10,7 @@
 bool trigered=false;
 
 simlcd_buffer_t LCD_BUFFER;
-simlcd_buffer_t msaa_buf,div_buf;
+simlcd_buffer_t div_buf;
 
 time_t rawtime;
 struct tm * timeinfo;
@@ -25,22 +25,22 @@ uint8_t zoom=4;
 int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
 {
 	static int xp,yp,xwp,ywp;
-	x*=msaa_buf.scale;
-	y*=msaa_buf.scale;
+	x*=div_buf.scale;
+	y*=div_buf.scale;
 	switch(event)
 	{
 		case SDL_MOUSEBUTTONDOWN:cliked=true;xwp=x;ywp=y;break;
 		case SDL_MOUSEBUTTONUP:
 			cliked=false;
-			SDL_GetWindowPosition(msaa_buf.window,&xp,&yp);
+			SDL_GetWindowPosition(div_buf.window,&xp,&yp);
 			LCD_BUFFER.wx=xp;
 			LCD_BUFFER.wy=yp;
 			break;
 		case SDL_MOUSEMOTION:
 		if(cliked)
 		{
-			SDL_GetWindowPosition(msaa_buf.window,&xp,&yp);
-			SDL_SetWindowPosition(msaa_buf.window,xp+(x-xwp),yp+(y-ywp));
+			SDL_GetWindowPosition(div_buf.window,&xp,&yp);
+			SDL_SetWindowPosition(div_buf.window,xp+(x-xwp),yp+(y-ywp));
 		}
 		break;
 	}
@@ -152,18 +152,15 @@ int loop(int key)
 
 		// dispcolor_Update();
 
-		// simlcd_div(&LCD_BUFFER,&div_buf,4);
-		// simlcd_display(&div_buf);
-
-		simlcd_msaa(&LCD_BUFFER,&msaa_buf,zoom);
-		simlcd_display(&msaa_buf);
+		simlcd_div(&LCD_BUFFER,&div_buf,zoom);
+		simlcd_display(&div_buf);
 
 		if(once_1)
 		{
 			#if(_WIN32)
-			MakeWindowTransparent(msaa_buf.window,bg%2?COLOR_HIDE_1_32:COLOR_HIDE_0_32,tr);
+			MakeWindowTransparent(div_buf.window,bg%2?COLOR_HIDE_1_32:COLOR_HIDE_0_32,tr);
 			#elif (__linux__)
-			SDL_SetWindowOpacity(msaa_buf.window,(float)tr/255.0);
+			SDL_SetWindowOpacity(div_buf.window,(float)tr/255.0);
 			#endif
 			once_1=false;
 		}
@@ -179,8 +176,7 @@ int loop(int key)
 
 void simlcd_exit()
 {
-	simlcd_deinit(&msaa_buf);
-	// simlcd_deinit(&div_buf);
+	simlcd_deinit(&div_buf);
 }
 
 int main(int argc,char *argv[])
