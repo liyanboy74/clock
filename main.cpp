@@ -135,10 +135,9 @@ int loop(int key)
 			return -1;break;
 		case SDL_SCANCODE_TAB:
 			zoom--;
-			if(zoom==0)zoom=10;
+			if(zoom==0)zoom=4;
 			once_1=true;
-			j=-1;
-			simlcd_deinit(&msaa_buf);
+			// j=-1;
 			break;
     }
 

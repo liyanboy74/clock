@@ -14,7 +14,7 @@
 typedef struct{
   bool displayed;
   uint32_t h,w;
-  uint32_t wx,wy;
+  uint32_t wx,wy,wu;
   uint32_t * buf;
   uint8_t scale;
   uint32_t selected_color;
