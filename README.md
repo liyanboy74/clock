@@ -2,7 +2,7 @@
 ### Simple Desktop Clock 
 Using SDL2 VSCode MSYS2-32bit & CMake
 
-![clock](https://github.com/user-attachments/assets/3f6aba07-62e1-4e06-b4a9-cec6517592e7)
+![clocks](https://github.com/user-attachments/assets/3da0d49d-dfea-4c66-ad99-0cf2cd772fe9)
 
 ```
 git clone --recursive https://github.com/liyanboy74/clock.git
