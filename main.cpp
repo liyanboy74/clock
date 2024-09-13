@@ -83,6 +83,9 @@ void draw()
 		case 4:
 			load_image(&LCD_BUFFER,flowerD);
 			break;
+		case 5:
+			load_image(&LCD_BUFFER,montain);
+			break;
 	}
 
 	DrawClock(timeinfo->tm_hour,timeinfo->tm_min,timeinfo->tm_sec,(bg%2),cc_t);
@@ -117,7 +120,7 @@ int loop(int key)
     {
         case SDL_SCANCODE_SPACE :
 			bg++;
-			if(bg>4)bg=0;
+			if(bg>5)bg=0;
 			j=-1;
 			once_1=true;
 			break;
