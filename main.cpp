@@ -1,4 +1,5 @@
 #include <time.h>
+#include <unistd.h>
 
 #include "simlcd.h"
 #include "dispcolor.h"
@@ -175,10 +176,59 @@ void simlcd_exit()
 	simlcd_deinit(&div_buf);
 }
 
+void save_user()
+{
+	#if(_WIN32)
+	char buf[0x400];
+	FILE *fp;
+	char * appdata = getenv("APPDATA");
+	if(appdata)
+	{
+		snprintf(buf,sizeof(buf),"%s\\clock.config",appdata);
+		fp=fopen(buf,"wb+");
+
+		fwrite(&LCD_BUFFER.wx,4,1,fp);
+		fwrite(&LCD_BUFFER.wy,4,1,fp);
+		fwrite(&bg,1,1,fp);
+		fwrite(&tr,1,1,fp);
+		fwrite(&zoom,1,1,fp);
+
+		fclose(fp);
+	}
+	#endif
+}
+
+void load_user()
+{
+	#if(_WIN32)
+	char buf[0x400];
+	FILE *fp;
+	char * appdata = getenv("APPDATA");
+	if(appdata)
+	{
+		snprintf(buf,sizeof(buf),"%s\\clock.config",appdata);
+		fp=fopen(buf,"rb");
+
+		if(fp!=NULL)
+		{
+			fread(&LCD_BUFFER.wx,4,1,fp);
+			fread(&LCD_BUFFER.wy,4,1,fp);
+			fread(&bg,1,1,fp);
+			fread(&tr,1,1,fp);
+			fread(&zoom,1,1,fp);
+
+			fclose(fp);
+		}
+	}
+	#endif
+}
+
 int main(int argc,char *argv[])
 {
     dispcolor_Init(240*2,240*2);
+	load_user();
     simlcd_play();
+	save_user();
     return 0;
 }
 
