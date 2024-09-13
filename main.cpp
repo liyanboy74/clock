@@ -20,7 +20,9 @@ bool cliked=false;
 uint8_t tr=150;
 
 uint8_t bg=0,cc_t=0;
-uint8_t zoom=4;
+uint8_t zoom=3;
+
+const uint16_t *images[]={space,girl,flowerD,w1,b1,w2,b2,w3,b3,w4,b4,w5,b5,w6,b6,w7,b7,montain,windows_xp};
 
 int simlcd_touch_event(uint32_t x,uint32_t y,uint16_t event)
 {
@@ -74,17 +76,8 @@ void draw()
 		case 1:
 			dispcolor_FillCircle(240,240,235,WHITE-1);
 			break;
-		case 2:
-			load_image(&LCD_BUFFER,space);
-			break;
-		case 3:
-			load_image(&LCD_BUFFER,girl);
-			break;
-		case 4:
-			load_image(&LCD_BUFFER,flowerD);
-			break;
-		case 5:
-			load_image(&LCD_BUFFER,montain);
+		default:
+			load_image(&LCD_BUFFER,images[bg-2]);
 			break;
 	}
 
@@ -120,7 +113,7 @@ int loop(int key)
     {
         case SDL_SCANCODE_SPACE :
 			bg++;
-			if(bg>5)bg=0;
+			if(bg>20)bg=0;
 			j=-1;
 			once_1=true;
 			break;
