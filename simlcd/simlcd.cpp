@@ -21,6 +21,7 @@ void simlcd_deinit(simlcd_buffer_t *buf)
 {
   if(buf->displayed)SDL_DestroyWindow(buf->window);
   buf->displayed=false;
+  SDL_RenderClear(buf->renderer);
   free(buf->buf);
 }
 
@@ -66,6 +67,7 @@ void simlcd_display(simlcd_buffer_t *buf)
   if(buf->wu)
   {
     if(buf->displayed)SDL_DestroyWindow(buf->window);
+    SDL_RenderClear(buf->renderer);
     buf->displayed=false;
     buf->wu=false;
   }
@@ -79,7 +81,6 @@ void simlcd_display(simlcd_buffer_t *buf)
     // wxp+=(buf->w*buf->scale);
   }
 
-  SDL_RenderClear(buf->renderer);
   for(i=0;i<buf->h;i++)
   {
     for(j=0;j<buf->w;j++)
