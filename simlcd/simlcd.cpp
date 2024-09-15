@@ -67,7 +67,6 @@ void simlcd_display(simlcd_buffer_t *buf)
   if(buf->wu)
   {
     if(buf->displayed)SDL_DestroyWindow(buf->window);
-    SDL_RenderClear(buf->renderer);
     buf->displayed=false;
     buf->wu=false;
   }
@@ -81,6 +80,7 @@ void simlcd_display(simlcd_buffer_t *buf)
     // wxp+=(buf->w*buf->scale);
   }
 
+  SDL_RenderClear(buf->renderer);
   for(i=0;i<buf->h;i++)
   {
     for(j=0;j<buf->w;j++)
@@ -175,8 +175,12 @@ void simlcd_div(simlcd_buffer_t *in,simlcd_buffer_t *out,int scale)
   }
   out->w=(in->w/scale);
 
-  if(out->displayed==true || out->wu==true)free(out->buf);
-  out->buf=(uint32_t*)calloc(sizeof(uint32_t),out->h*out->w);
+  if(out->wu==true)free(out->buf);
+
+  if(out->displayed==false || out->wu==true)
+  {
+    out->buf=(uint32_t*)calloc(sizeof(uint32_t),out->h*out->w);
+  }
 
   for(y=0;y<(out->h);y++)
     for(x=0;x<(out->w);x++)
