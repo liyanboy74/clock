@@ -75,7 +75,8 @@ void simlcd_display(simlcd_buffer_t *buf)
   {
     // SDL_CreateWindowAndRenderer(WIDTH*SCALE,HEIGHT*SCALE,0,&window,&renderer);
     SDL_Init(SDL_INIT_EVERYTHING);
-    buf->window=SDL_CreateWindow("",buf->wx-((buf->w*buf->scale)/2),buf->wy-((buf->h*buf->scale)/2),buf->w*buf->scale,buf->h*buf->scale,SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR);
+    buf->window=SDL_CreateWindow("",buf->wx-((buf->w*buf->scale)/2),buf->wy-((buf->h*buf->scale)/2),buf->w*buf->scale,buf->h*buf->scale,
+    SDL_WINDOW_BORDERLESS);//SDL_WINDOW_ALWAYS_ON_TOP|SDL_WINDOW_SKIP_TASKBAR
     buf->renderer=SDL_CreateRenderer(buf->window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     // wxp+=(buf->w*buf->scale);
   }
